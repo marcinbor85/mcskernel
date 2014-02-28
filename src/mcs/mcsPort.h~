@@ -1,0 +1,4 @@
+#include "port/linux/timers.h"
+
+void mcsPortInit(void) {
+}

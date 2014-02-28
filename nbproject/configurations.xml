@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="90">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="src" displayName="src" projectFiles="true">
+        <logicalFolder name="mcs" displayName="mcs" projectFiles="true">
+          <logicalFolder name="port" displayName="port" projectFiles="true">
+            <logicalFolder name="cortex" displayName="cortex" projectFiles="true">
+            </logicalFolder>
+            <logicalFolder name="linux" displayName="linux" projectFiles="true">
+              <itemPath>src/mcs/port/linux/mcsPort.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <itemPath>src/mcs/mcsConfig.h</itemPath>
+          <itemPath>src/mcs/mcsPort.h</itemPath>
+          <itemPath>src/mcs/mcsService.c</itemPath>
+          <itemPath>src/mcs/mcsService.h</itemPath>
+          <itemPath>src/mcs/mcsTypes.h</itemPath>
+        </logicalFolder>
+        <itemPath>src/main.c</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>src</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>src/mcs</pElem>
+            <pElem>src</pElem>
+          </incDir>
+        </cTool>
+      </compileType>
+      <item path="src/main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/mcs/mcsConfig.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/mcs/mcsPort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/mcs/mcsService.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/mcs/mcsService.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/mcs/mcsTypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/mcs/port/linux/mcsPort.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+          <incDir>
+            <pElem>src/mcs</pElem>
+            <pElem>src</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="src/main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/mcs/mcsConfig.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/mcs/mcsPort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/mcs/mcsService.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/mcs/mcsService.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/mcs/mcsTypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/mcs/port/linux/mcsPort.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

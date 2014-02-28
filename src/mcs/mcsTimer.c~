@@ -1,0 +1,116 @@
+#include "mcsTypes.h"
+
+#define MCS_TIMER_SIZE_MAX       16
+
+typedef enum {
+    MCS_TIMER_TYPE_NOTUSED = 0,
+    MCS_TIMER_TYPE_SINGLE = 1,
+    MCS_TIMER_TYPE_MULTI = 2,
+    MCS_TIMER_TYPE_BUFFERED = 3
+} mcsTimerType;
+
+typedef enum {
+    MCS_TIMER_STATE_STOP = 0,
+    MCS_TIMER_STATE_RUN = 1
+} mcsTimerState;
+
+mcsTimerStruct mcsTimerList;
+
+typedef struct {
+    mcsTimerItemStruct item[MCS_TIMER_SIZE_MAX];
+    mcsTimerState state;
+    mcsU32 tick;
+} mcsTimerStruct;
+
+typedef struct {
+    void (*handle)(mcsU32);
+    mcsU32 period;
+    mcsU32 counter;
+    mcsTimerType type;
+    mcsTimerState state;
+    mcsU8 runCounter;
+} mcsTimerItemStruct;
+
+void mcsTimerInit(void) {
+    mcsU8 i;
+    mcsTimerItemStruct *item;
+
+    for (i=0; i<MCS_TIMER_SIZE_MAX; i++) {
+        item=(mcsTimerItemStruct)&mcsTimerList.item[i];
+
+        item->state=MCS_TIMER_STATE_STOP;
+        item->type=MCS_TIMER_TYPE_NOTUSED;
+        item->handle=mcsNULL;
+        item->counter=0;
+        item->runCounter=0;
+        item->period=0;
+    }
+    mcsTimerList.tick=0;
+    mcsTimerList.state=MCS_TIMER_STATE_STOP;
+}
+
+mcsTimerItemStruct* mcsTimerAdd(mcsBASE *_handle, mcsU32 _period, mcsTimerType _type, mcsTimerState _state) {
+    mcsTimerItemStruct *item;
+    mcsU8 i;
+    for (i=0; i<MCS_TIMER_SIZE_MAX; i++) {
+        item=(mcsTimerItemStruct)&mcsTimerList.item[i];
+        if (item->state==MCS_TIMER_TYPE_NOTUSED) {
+            item->handle=_handle;
+            item->period=_period;
+            item->type=_type;
+            item->state=_state;
+            item->counter=0;
+            item->runCounter=0;
+            return item;
+        }
+    }
+    return mcsNULL;
+}
+
+void mcsTimerTickInt(mcsU32 _tick) {
+    mcsU8 i;
+    mcsTimerItemStruct *item;
+    if (mcsTimerList.state!=MCS_TIMER_STATE_RUN) return;
+    mcsTimerList.tick++;
+    for (i=0; i<MCS_TIMER_SIZE_MAX; i++) {
+        item=(mcsTimerItemStruct)&mcsTimerList.item[i];
+        if (item->state==MCS_TIMER_STATE_RUN && item->state!=MCS_TIMER_TYPE_NOTUSED) {
+            switch (item->type) {
+                case MCS_TIMER_TYPE_SINGLE:
+                    item->counter++;
+                    if (item->counter>=item->period) {
+                        item->state=MCS_TIMER_STATE_STOP;
+                        item->runCounter=1;
+                    }
+                    break;
+                case MCS_TIMER_TYPE_MULTI:
+                    item->counter++;
+                    if (item->counter>=item->period) {
+                        item->counter=0;
+                        item->runCounter=1;
+                    }
+                    break;
+                case MCS_TIMER_TYPE_BUFFERED:
+                    item->counter++;
+                    if (item->counter>=item->period) {
+                        item->counter=0;
+                        item->runCounter++;
+                    }
+                    break;
+            }
+        }
+    }
+}
+
+void mcsTimerService(void) {
+    mcsU8 i;
+    mcsTimerItemStruct *item;
+    if (mcsTimerList.state!=MCS_TIMER_STATE_RUN) return;
+    for (i=0; i<MCS_TIMER_SIZE_MAX; i++) {
+        item=(mcsTimerItemStruct)&mcsTimerList.item[i];
+        while (item->runCounter-->0) {
+            item->handle();
+        }
+    }
+}
+
